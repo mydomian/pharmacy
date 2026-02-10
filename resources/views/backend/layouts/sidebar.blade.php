@@ -1,0 +1,55 @@
+ <div data-simplebar class="h-100">
+     <div id="sidebar-menu">
+         <ul class="metismenu list-unstyled" id="side-menu">
+             <li class="menu-title">Main</li>
+             <li>
+                 <a href="{{ route('dashboard') }}" class="waves-effect">
+                     <i class="mdi mdi-home"></i>
+                     <span>Dashboard</span>
+
+                 </a>
+             </li>
+             <li>
+                 <a href="javascript: void(0);" class="has-arrow waves-effect">
+                     <i class="mdi mdi-account-group"></i>
+                     <span>Units</span>
+                 </a>
+                 <ul class="sub-menu" aria-expanded="false">
+                     <li><a href="{{ route('units.index') }}">Unit List</a></li>
+                     <li><a href="{{ route('units.create') }}">Add Unit</a></li>
+                 </ul>
+             </li>
+             <li>
+                 <a href="javascript: void(0);" class="has-arrow waves-effect">
+                     <i class="mdi mdi-account-group"></i>
+                     <span>Customers</span>
+                 </a>
+                 <ul class="sub-menu" aria-expanded="false">
+                     <li><a href="{{ route('customers.index') }}">Customer List</a></li>
+                     <li><a href="{{ route('customers.create') }}">Add Customer</a></li>
+                 </ul>
+             </li>
+
+             <li>
+                 <a href="javascript: void(0);" class="has-arrow waves-effect">
+                     <i class="mdi mdi-account-group"></i>
+                     <span>Suppliers</span>
+                 </a>
+                 <ul class="sub-menu" aria-expanded="false">
+                     <li><a href="{{ route('suppliers.index') }}">Supplier List</a></li>
+                     <li><a href="{{ route('suppliers.create') }}">Add Supplier</a></li>
+                 </ul>
+             </li>
+             <li>
+                 <a href="javascript: void(0);" class="has-arrow waves-effect">
+                     <i class="mdi mdi-account-group"></i>
+                     <span>Products</span>
+                 </a>
+                 <ul class="sub-menu" aria-expanded="false">
+                     <li><a href="{{ route('products.index') }}">Product List</a></li>
+                     <li><a href="{{ route('products.create') }}">Add Product</a></li>
+                 </ul>
+             </li>
+         </ul>
+     </div>
+ </div>
