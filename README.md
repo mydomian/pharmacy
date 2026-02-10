@@ -1,1 +1,1 @@
-<h1>Pharmacy</h1>
+<h1 style="text-align:center">Pharmacy</h1>
