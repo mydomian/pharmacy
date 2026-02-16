@@ -9,7 +9,6 @@ class Product extends Model
     protected $fillable = [
         'unit_id',
         'name',
-        'unit_size',
         'price',
     ];
     public function unit()

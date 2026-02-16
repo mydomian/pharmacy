@@ -42,23 +42,6 @@
                                     </select>
                                 </div>
 
-                                <div id="size-container">
-                                    @if($product->unit)
-                                    <div class="mb-2">
-                                        <label for="size" class="form-label">
-                                            Unit Size ({{ $product->unit->name }})
-                                        </label>
-                                        <input type="text"
-                                               class="form-control form-control-sm"
-                                               id="size"
-                                               name="unit_size"
-                                               value="{{ old('unit_size', $product->unit_size) }}"
-                                               placeholder="Enter unit size"
-                                               required>
-                                    </div>
-                                    @endif
-                                </div>
-
                                 <div class="mb-2">
                                     <label for="price" class="form-label">Price</label>
                                     <input type="number"
@@ -96,26 +79,6 @@ $(document).ready(function() {
     $('#unit_id').select2({
         placeholder: "Select a unit",
         allowClear: true
-    });
-
-    $('#unit_id').on('change', function() {
-        let unitId = $(this).val();
-        let selectedUnitName = $(this).find('option:selected').text();
-        $('#size-container').empty();
-        if (unitId) {
-            let inputHtml = `
-                <div class="mb-2">
-                    <label for="size" class="form-label">Unit Size (${selectedUnitName})</label>
-                    <input type="text"
-                           class="form-control form-control-sm"
-                           id="size"
-                           name="unit_size"
-                           placeholder="Enter unit size"
-                           required>
-                </div>
-            `;
-            $('#size-container').html(inputHtml);
-        }
     });
 });
 </script>

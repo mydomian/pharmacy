@@ -32,8 +32,6 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <div id="size-container"></div>
-
                                                 <div class="mb-2">
                                                     <label for="price" class="form-label">Price</label>
                                                     <input type="number"
@@ -63,29 +61,6 @@
             $('#unit_id').select2({
                 placeholder: "Select a unit",
                 allowClear: true
-            });
-        });
-
-        $(document).ready(function() {
-            $('#unit_id').on('change', function() {
-                let unitId = $(this).val();
-                let selectedUnitName = $(this).find('option:selected').text();
-                $('#size-container').empty();
-                if (unitId) {
-                    let inputHtml = `
-                        <div class="mb-2">
-                            <label for="size" class="form-label">Unit Size (${selectedUnitName})</label>
-                            <input type="text"
-                                class="form-control form-control-sm"
-                                id="size"
-                                name="unit_size"
-                                placeholder="Enter quantity"
-                                title="Enter quantity"
-                                required>
-                        </div>
-                    `;
-                    $('#size-container').html(inputHtml);
-                }
             });
         });
     </script>

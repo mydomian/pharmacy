@@ -50,6 +50,36 @@
                      <li><a href="{{ route('products.create') }}">Add Product</a></li>
                  </ul>
              </li>
+             <li>
+                 <a href="javascript: void(0);" class="has-arrow waves-effect">
+                     <i class="mdi mdi-account-group"></i>
+                     <span>Purchases</span>
+                 </a>
+                 <ul class="sub-menu" aria-expanded="false">
+                     <li><a href="{{ route('purchases.index') }}">Purchase List</a></li>
+                     <li><a href="{{ route('purchases.create') }}">Add Purchase</a></li>
+                 </ul>
+             </li>
+             <li>
+                 <a href="javascript: void(0);" class="has-arrow waves-effect">
+                     <i class="mdi mdi-account-group"></i>
+                     <span>Sales</span>
+                 </a>
+                 <ul class="sub-menu" aria-expanded="false">
+                     <li><a href="{{ route('sales.index') }}">Sales List</a></li>
+                     <li><a href="{{ route('sales.create') }}">Add Sale</a></li>
+                 </ul>
+             </li>
+             <li>
+                 <a href="javascript: void(0);" class="has-arrow waves-effect">
+                     <i class="mdi mdi-account-group"></i>
+                     <span>Stocks</span>
+                 </a>
+                 <ul class="sub-menu" aria-expanded="false">
+                     <li><a href="{{ route('stocks.index') }}">Stock</a></li>
+                     <li><a href="{{ route('stocks.log') }}">Stock Log</a></li>
+                 </ul>
+             </li>
          </ul>
      </div>
  </div>
