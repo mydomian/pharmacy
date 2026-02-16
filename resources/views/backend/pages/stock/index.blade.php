@@ -1,6 +1,6 @@
 @extends('backend.layouts.master')
 @push('title')
-    Product Lists
+    Stock Lists
 @endpush
 @push('css')
     <link href="{{ asset('storage/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,8 +14,7 @@
                                 <div class="col-12">
                                     <div class="card">
                                         <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h4 class="card-title m-0">Product Lists</h4>
-                                            <a href="{{ route('products.create') }}" class="btn btn-sm btn-success waves-effect waves-light"><i class="fas fa-plus"></i> Add New</a>
+                                            <h4 class="card-title m-0">Stock Lists</h4>
                                         </div>
                                         <div class="card-body">
                                             <div style="width: 100%; overflow-x: auto;">
@@ -24,33 +23,16 @@
                                                     <thead>
                                                         <tr>
                                                             <th>SL</th>
-                                                            <th>Name</th>
-                                                            <th>Unit</th>
-                                                            <th>Price</th>
-                                                            <th class="text-center">Action</th>
+                                                            <th>Product Name</th>
+                                                            <th>Quantity</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach($products as $product)
+                                                        @foreach($stocks as $stock)
                                                         <tr>
                                                             <td>{{ $loop->iteration }}</td>
-                                                            <td>{{ $product?->name }}</td>
-                                                            <td>{{ $product->unit?->name }}</td>
-                                                            <td>{{ $product?->price }}</td>
-                                                            <td class="d-flex justify-content-center align-items-center gap-2">
-                                                                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-sm btn-primary waves-effect waves-light d-flex justify-content-center align-items-center gap-1"><i class="fas fa-edit"></i> Edit</a>
-                                                                <form action="{{ route('products.destroy', $product->id) }}"
-                                                                    method="POST"
-                                                                    style="display:inline-block"
-                                                                    onsubmit="return confirm('Are you sure?')">
-                                                                    @csrf
-                                                                    @method('DELETE')
-
-                                                                    <button type="submit" class="btn btn-sm btn-danger d-flex justify-content-center align-items-center gap-1">
-                                                                        <i class="fas fa-trash"></i> Delete
-                                                                    </button>
-                                                                </form>
-                                                            </td>
+                                                            <td>{{ $stock->product?->name }} {{ $stock->product?->unit?->name }}</td>
+                                                            <td>{{ $stock->quantity }}</td>
                                                         </tr>
                                                         @endforeach
                                                     </tbody>
