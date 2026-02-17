@@ -80,6 +80,25 @@
                      <li><a href="{{ route('stocks.log') }}">Stock Log</a></li>
                  </ul>
              </li>
+             <li>
+                 <a href="javascript: void(0);" class="has-arrow waves-effect">
+                     <i class="mdi mdi-account-group"></i>
+                     <span>Reports</span>
+                 </a>
+                 <ul class="sub-menu" aria-expanded="false">
+                     <li><a href="{{ route('purchases.reports') }}">Purchase Report</a></li>
+                     <li><a href="{{ route('sales.reports') }}">Sale Report</a></li>
+                 </ul>
+             </li>
+             <li>
+                 <a href="javascript: void(0);" class="has-arrow waves-effect">
+                     <i class="mdi mdi-account-group"></i>
+                     <span>Expenses</span>
+                 </a>
+                 <ul class="sub-menu" aria-expanded="false">
+                     <li><a href="{{ route('expenses.index') }}">Expense</a></li>
+                 </ul>
+             </li>
          </ul>
      </div>
  </div>

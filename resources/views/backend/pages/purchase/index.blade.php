@@ -40,7 +40,7 @@
                                                             <td>{{ $purchase->purchase_date ?? '' }}</td>
                                                             <td>{{ number_format($purchase->total_amount) ?? '' }}</td>
                                                             <td class="d-flex justify-content-center align-items-center gap-2">
-                                                                <a href="{{ route('purchases.print', $purchase->id) }}" class="btn btn-sm btn-light waves-effect waves-light d-flex justify-content-center align-items-center gap-1"><i class="fas fa-print"></i> Print</a>
+                                                                <a href="{{ route('purchases.print', $purchase->id) }}" class="btn btn-sm btn-secondary waves-effect waves-light d-flex justify-content-center align-items-center gap-1"><i class="fas fa-print"></i> Print</a>
                                                                 <a href="{{ route('purchases.show', $purchase->id) }}" class="btn btn-sm btn-info waves-effect waves-light d-flex justify-content-center align-items-center gap-1"><i class="fas fa-eye"></i> View</a>
                                                                 <a href="{{ route('purchases.edit', $purchase->id) }}" class="btn btn-sm btn-primary waves-effect waves-light d-flex justify-content-center align-items-center gap-1"><i class="fas fa-edit"></i> Edit</a>
                                                                 <form action="{{ route('purchases.destroy', $purchase->id) }}"

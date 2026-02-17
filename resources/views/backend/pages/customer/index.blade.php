@@ -27,19 +27,33 @@
                                                             <th>Name</th>
                                                             <th>Phone</th>
                                                             <th>Address</th>
+                                                            <th>Sale Center</th>
+                                                            <th>District</th>
+                                                            <th>Thana</th>
+                                                            <th>Area</th>
                                                             <th>Created</th>
                                                             <th class="text-center">Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach($customers as $customer)
+                                                        @php
+                                                            $total = $customer->payment_transaction ? $customer->payment_transaction->sum('total') : 0;
+                                                            $paid  = $customer->payment_transaction ? $customer->payment_transaction->sum('paid') : 0;
+                                                            $due   = $total - $paid;
+                                                        @endphp
                                                         <tr>
                                                             <td>{{ $loop->iteration }}</td>
                                                             <td>{{ $customer?->name }}</td>
                                                             <td>{{ $customer?->phone }}</td>
                                                             <td>{{ $customer?->address }}</td>
+                                                            <td>{{ $customer?->sale_center }}</td>
+                                                            <td>{{ $customer?->district }}</td>
+                                                            <td>{{ $customer?->thana }}</td>
+                                                            <td>{{ $customer?->area }}</td>
                                                             <td>{{ $customer?->created_at->format('d M Y') }}</td>
                                                             <td class="d-flex justify-content-center align-items-center gap-2">
+                                                                <a href="{{ route('customers.payment',$customer->id) }}" class="btn btn-sm btn-primary waves-effect waves-light d-flex justify-content-center align-items-center gap-1"><i class="fas fa-money-check-alt"></i> Payment</a>
                                                                 <a href="{{ route('customers.edit', $customer->id) }}" class="btn btn-sm btn-primary waves-effect waves-light d-flex justify-content-center align-items-center gap-1"><i class="fas fa-edit"></i> Edit</a>
                                                                 <form action="{{ route('customers.destroy', $customer->id) }}"
                                                                     method="POST"

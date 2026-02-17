@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\PaymentTransaction;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Stock;
@@ -73,6 +74,17 @@ class SaleController extends Controller
                 'type' => 'out',
             ]);
         }
+        $paymentTransaction = PaymentTransaction::create([
+            'customer_id' => $request->customer_id,
+            'sale_id' => $sale->id,
+            'total' => $sale->total,
+            'paid' => $request->paid_amount,
+            'due' => $sale->total - $request->paid_amount,
+            'payment_date' => $sale->date,
+            'payment_status' => "Inital Payment",
+            'note' => $request->note,
+        ]);
+
         return redirect()->route('sales.print', $sale->id);
     }
 
@@ -92,7 +104,7 @@ class SaleController extends Controller
     {
         $customers = Customer::get();
         $products = Product::get();
-        $sale = Sale::with('customer','items.product')->findOrFail($id);
+        $sale = Sale::with('customer','items.product','payment_transactions')->findOrFail($id);
         return view('backend.pages.sale.edit', compact('customers','products','sale'));
     }
 
@@ -168,6 +180,16 @@ class SaleController extends Controller
                 'type' => 'out',
             ]);
         }
+        $payment = PaymentTransaction::where(['sale_id'=>$sale->id,'customer_id'=>$sale->customer_id])->first();
+        $payment->update([
+            'customer_id' => $request->customer_id,
+            'total' => $sale->total,
+            'paid' => $request->paid_amount,
+            'due' => $sale->total - $request->paid_amount,
+            'payment_date' => $sale->date,
+            'payment_status' => "Due Payment",
+            'note' => $request->note,
+        ]);
         return redirect()->route('sales.print', $sale->id);
     }
 
@@ -188,5 +210,12 @@ class SaleController extends Controller
         $numberTransformer = $numberToWords->getNumberTransformer('en');
         $words = $numberTransformer->toWords($sale->total);
         return view('backend.pages.sale.print', compact('sale','words'));
+    }
+
+    public function reports(Request $request){
+        $fromDate = $request->query('from_date') ?? date('Y-m-d');
+        $toDate = $request->query('to_date') ?? date('Y-m-d');
+        $sales = Sale::with('customer', 'items')->whereBetween('date', [$fromDate, $toDate])->latest()->get();
+        return view('backend.pages.sale.report', compact('sales', 'fromDate', 'toDate'));
     }
 }
