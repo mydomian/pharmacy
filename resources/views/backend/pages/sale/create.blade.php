@@ -131,7 +131,7 @@
                                 </div>
                                 <div class="row my-2 d-flex justify-content-end">
                                     <div class="col-12 col-sm-3 d-flex justify-content-between align-items-center">
-                                        <h6>Paid Amount:</h6><h6 class="paid_amount"><input type="number" name="paid_amount" class="form-control form-control-sm" required></h6>
+                                        <h6>Paid Amount:</h6><h6><input type="number" name="paid_amount" class="paid_amount form-control form-control-sm" required></h6>
                                     </div>
                                 </div>
                                 <div class="row my-2 d-flex justify-content-end">
@@ -139,6 +139,7 @@
                                         <h6>Due Amount:</h6><h6 class="due_amount">0.00</h6>
                                     </div>
                                 </div>
+
 
                                 <div class="d-flex justify-content-end gap-2 mt-4">
                                     <button type="reset" class="btn btn-sm btn-secondary waves-effect waves-light"><i class="fas fa-sync-alt"></i> Reset</button>
@@ -185,6 +186,11 @@ $(document).ready(function() {
         });
 
         $('.total_amount').text(total.toFixed(2));
+
+        // Calculate due amount
+        let paid = parseFloat($('input[name="paid_amount"]').val()) || 0;
+        let due  = total - paid;
+        $('.due_amount').text(due.toFixed(2));
     }
 
     // Customer change
@@ -203,6 +209,10 @@ $(document).ready(function() {
             calculateTotal();
         }
     );
+
+    $(document).on('input', 'input[name="paid_amount"]', function () {
+        calculateTotal();
+    });
 
     $(document).on('change', '.product_id', function () {
         let row   = $(this).closest('.row');

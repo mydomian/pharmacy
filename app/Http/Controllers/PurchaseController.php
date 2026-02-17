@@ -144,4 +144,13 @@ class PurchaseController extends Controller
         $words = $numberTransformer->toWords($purchase->total_amount);
         return view('backend.pages.purchase.print', compact('purchase','words'));
     }
+
+    public function reports(Request $request)
+    {
+        $fromDate = $request->query('from_date') ?? date('Y-m-d');
+        $toDate = $request->query('to_date') ?? date('Y-m-d');
+        $purchases = Purchase::with('supplier', 'items')->whereBetween('purchase_date', [$fromDate, $toDate])->get();
+        return view('backend.pages.purchase.report', compact('purchases', 'fromDate', 'toDate'));
+    }
+
 }

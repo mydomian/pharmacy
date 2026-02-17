@@ -10,5 +10,14 @@ class Customer extends Model
         'name',
         'phone',
         'address',
+        'sale_center',
+        'district',
+        'thana',
+        'area',
     ];
+
+    public function payment_transactions()
+    {
+        return $this->hasMany(PaymentTransaction::class);
+    }
 }

@@ -9,8 +9,14 @@
         <div class="card p-4" id="invoice">
             {{-- HEADER --}}
             <div class="text-center mb-3">
-                <h3 class="fw-bold text-success">Guardian Healthcare Ltd.</h3>
-                <p class="mb-0">34, Lake Circus, Kalabagan, Dhaka-1205</p>
+                @if(auth()->user()->company_logo)
+                    <img src="{{ asset('storage/' . auth()->user()->company_logo) }}"
+                        alt="Company Logo"
+                        style="max-height: 100px; margin-bottom: 10px;">
+                @endif
+                <h3 class="fw-bold text-success">{{ auth()->user()->company_name ?? 'Company Name Here' }}</h3>
+                <p class="mb-0">{{ auth()->user()->company_phone ?? 'Company Phone Here' }}</p>
+                <p class="mb-0">{{ auth()->user()->company_address ?? 'Company Address Here' }}</p>
                 <h5 class="mt-2 text-uppercase">Invoice</h5>
             </div>
 
@@ -21,13 +27,18 @@
                         <div class="d-flex justify-content-between">
                             <!-- Start point (left) -->
                             <div>
-                                <strong>Customer Name & ID :</strong> {{ $sale->customer->name }} <br>
-                                <strong>Customer Address :</strong> {{ $sale->customer->address ?? '-' }} <br>
-                                <strong>Mobile :</strong> {{ $sale->customer->phone ?? '-' }}
+                                <strong>Customer Name & ID :</strong> {{ $sale->customer?->name }} <br>
+                                <strong>Customer Address :</strong> {{ $sale->customer?->address }} <br>
+                                <strong>Sales Center Name :</strong> {{ $sale->customer?->sale_center }} <br>
+                                <strong>District Name :</strong> {{ $sale->customer?->district }} <br>
+                                <strong>Thana Name :</strong> {{ $sale->customer?->thana }} <br>
+                                <strong>Area Name :</strong> {{ $sale->customer?->area }} <br>
+                                <strong>Mobile :</strong> {{ $sale->customer?->phone }}
                             </div>
 
                             <!-- End point (right) -->
                             <div class="text-end">
+                                <strong>Name & ID :</strong> {{ auth()->user()->company_name ?? 'Company Name Here' }} <br>
                                 <strong>Payment Type :</strong> {{ ucfirst($sale->payment_type) }} <br>
                                 <strong>Order No :</strong> #{{ $sale->id }} <br>
                                 <strong>Order Date :</strong> {{ $sale->order_date }} <br>

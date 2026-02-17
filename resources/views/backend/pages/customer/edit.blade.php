@@ -39,6 +39,22 @@
                                                     <label for="address" class="form-label">Address</label>
                                                     <input type="text" class="form-control form-control-sm" id="address" name="address" placeholder="Enter address" title="Enter address here" value="{{ $customer->address }}" required>
                                                 </div>
+                                                <div class="mb-2">
+                                                    <label for="sales_center" class="form-label">Sales Center</label>
+                                                    <input type="text" class="form-control form-control-sm" id="sales_center" name="sale_center" value="{{ $customer->sale_center }}" placeholder="Enter Sales Center" title="Enter sale center here">
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label for="district" class="form-label">District</label>
+                                                    <input type="text" class="form-control form-control-sm" id="district" name="district" value="{{ $customer->district }}" placeholder="Enter district" title="Enter district here">
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label for="thana" class="form-label">Thana</label>
+                                                    <input type="text" class="form-control form-control-sm" id="thana" name="thana" value="{{ $customer->thana }}" placeholder="Enter thana" title="Enter thana here">
+                                                </div>
+                                                <div class="mb-2">
+                                                    <label for="area" class="form-label">Area</label>
+                                                    <input type="text" class="form-control form-control-sm" id="area" name="area" value="{{ $customer->area }}" placeholder="Enter area" title="Enter area here">
+                                                </div>
                                                 <div class="d-flex justify-content-end gap-2">
                                                     <button type="reset" class="btn btn-sm btn-secondary waves-effect waves-light"><i class="fas fa-sync-alt"></i> Reset</button>
                                                     <button type="submit" class="btn btn-sm btn-primary waves-effect waves-light"><i class="fas fa-save"></i> Update</button>
