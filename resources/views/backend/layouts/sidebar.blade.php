@@ -99,6 +99,16 @@
                      <li><a href="{{ route('expenses.index') }}">Expense</a></li>
                  </ul>
              </li>
+             <li>
+                 <a href="javascript: void(0);" class="has-arrow waves-effect">
+                     <i class="mdi mdi-account-group"></i>
+                     <span>Employees</span>
+                 </a>
+                 <ul class="sub-menu" aria-expanded="false">
+                     <li><a href="{{ route('employees.index') }}">Employee</a></li>
+                     <li><a href="{{ route('salaries.index') }}">Salaries</a></li>
+                 </ul>
+             </li>
          </ul>
      </div>
  </div>

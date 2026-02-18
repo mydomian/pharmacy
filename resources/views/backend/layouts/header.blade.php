@@ -1,20 +1,9 @@
 <div class="navbar-header">
     <div class="d-flex">
-        <div class="navbar-brand-box">
-            <a href="{{ route('dashboard') }}" class="logo logo-dark">
-                <span class="logo-sm">
-                    <img src="{{ asset('storage/assets/images/logo-sm-dark.png') }}" alt="" height="22">
-                </span>
-                <span class="logo-lg">
-                    <img src="{{ asset('storage/assets/images/logo-dark.png') }}" alt="" height="24">
-                </span>
-            </a>
-            <a href="{{ route('dashboard') }}" class="logo logo-light">
-                <span class="logo-sm">
-                    <img src="{{ asset('storage/assets/images/logo-sm-light.png') }}" alt="" height="22">
-                </span>
-                <span class="logo-lg">
-                    <img src="{{ asset('storage/assets/images/logo-light.png') }}" alt="" height="24">
+        <div class="navbar-brand-box d-flex justify-content-center align-items-center">
+            <a href="{{ route('dashboard') }}" class="">
+                <span class="">
+                    <h5>{{  auth()->user()->name ?? 'Admin' }}</h5>
                 </span>
             </a>
         </div>
@@ -47,12 +36,11 @@
         <div class="dropdown d-inline-block">
             <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img class="rounded-circle header-profile-user" src="{{ asset('storage/assets/images/users/avatar-4.jpg') }}"
-                    alt="Header Avatar">
+                <img class="rounded-circle header-profile-user" src="{{ asset('storage/' . auth()->user()->company_logo) }}"
+                    alt="Header Avatar" height="22">
             </button>
 
             <div class="dropdown-menu dropdown-menu-end">
-                <!-- item-->
                 <a class="dropdown-item" href="{{ route('profile') }}"><i
                         class="mdi mdi-account-circle font-size-16 align-middle me-2 text-muted"></i>
                     <span>Profile</span></a>

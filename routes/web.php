@@ -6,8 +6,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\SalaryMonthController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockController;
 
@@ -32,6 +34,10 @@ Route::middleware('auth')->group(function () {
     Route::get('stocks', [StockController::class,'index'])->name('stocks.index');
     Route::get('stocks/log', [StockController::class,'log'])->name('stocks.log');
     Route::resource('expenses', ExpenseController::class);
+    Route::resource('employees', EmployeeController::class);
+    Route::resource('salaries', SalaryMonthController::class);
+    Route::post('salaries/payment/release', [SalaryMonthController::class,'release_payment'])->name('salaries.releasePayment');
+
     Route::match(['get','post'],'profile',[DashboardController::class,'profile'])->name('profile');
 });
 
