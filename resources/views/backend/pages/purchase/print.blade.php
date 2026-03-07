@@ -2,6 +2,17 @@
 @push('title')
     Purchases Print
 @endpush
+@push('css')
+    <style>
+        .table-borderless,
+        .table-borderless tr,
+        .table-borderless td,
+        .table-borderless th {
+            border: none !important;
+            padding:0px;
+        }
+    </style>
+@endpush
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
@@ -10,7 +21,7 @@
             {{-- HEADER --}}
             <div class="text-center mb-3">
                 @if(auth()->user()->company_logo)
-                    <img src="{{ asset('storage/' . auth()->user()->company_logo) }}"
+                    <img src="{{ asset(auth()->user()->company_logo) }}"
                         alt="Company Logo"
                         style="max-height: 100px; margin-bottom: 10px;">
                 @endif
@@ -21,28 +32,64 @@
             </div>
 
             {{-- Supplier INFO --}}
-            <table class="table table-borderless mb-3">
+            <table class="table table-bordered mb-3">
                 <tr>
-                    <td colspan="2">
+                    <td class="w-50">
                         <div class="d-flex justify-content-between">
-                            <!-- Start point (left) -->
-                            <div>
-                                <strong>Supplier Name & ID :</strong> {{ $purchase->supplier?->name }} <br>
-                                <strong>Supplier Address :</strong> {{ $purchase->supplier?->address }} <br>
-                                <strong>Mobile :</strong> {{ $purchase->supplier?->phone }}
-                            </div>
 
-                            <!-- End point (right) -->
-                            <div class="text-end">
-                                <strong>Name & ID :</strong> {{ auth()->user()->company_name ?? 'Company Name Here' }} <br>
-                                <strong>Payment Type :</strong> Bank <br>
-                                <strong>Purchase No :</strong> #{{ $purchase->id }} <br>
-                                <strong>Purchase Date :</strong> {{ $purchase->purchase_date }} <br>
-                            </div>
+                            <!-- LEFT SIDE -->
+                            <table class="table table-borderless table-sm w-auto">
+                                <tr>
+                                    <td class="fw-bold pe-2">Supplier Name & ID</td>
+                                    <td class="pe-2">:</td>
+                                    <td>{{ $purchase->supplier?->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold pe-2">Supplier Address</td>
+                                    <td class="pe-2">:</td>
+                                    <td>{{ $purchase->supplier?->address }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold pe-2">Mobile</td>
+                                    <td class="pe-2">:</td>
+                                    <td>{{ $purchase->supplier?->phone }}</td>
+                                </tr>
+                            </table>
+
+                           
+
+                        </div>
+                    </td>
+                    <td class="w-50">
+                        <div class="d-flex justify-content-end">
+                             <!-- RIGHT SIDE -->
+                            <table class="table table-borderless table-sm w-auto text-end">
+                                <tr>
+                                    <td class="fw-bold pe-2">Name & ID</td>
+                                    <td class="pe-2">:</td>
+                                    <td>{{ $purchase->supplier?->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold pe-2">Payment Type</td>
+                                    <td class="pe-2">:</td>
+                                    <td>Bank</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold pe-2">Purchase No</td>
+                                    <td class="pe-2">:</td>
+                                    <td>#{{ $purchase->id }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold pe-2">Purchase Date</td>
+                                    <td class="pe-2">:</td>
+                                    <td>{{ Carbon\Carbon::parse($purchase->purchase_date)->format('d M Y') }}</td>
+                                </tr>
+                            </table>
                         </div>
                     </td>
                 </tr>
             </table>
+
 
             {{-- ITEMS TABLE --}}
             <table class="table table-bordered text-center">
@@ -69,8 +116,8 @@
 
                 <tfoot>
                     <tr>
-                        <th colspan="4" class="text-end">Total</th>
-                        <th>{{ number_format($purchase->total_amount,2) }}</th>
+                        <th colspan="4" class="text-end">Total Amount<br> Paid Amount<br> Due Amount</th>
+                        <th>{{ number_format($purchase->total_amount,2) }} <br> {{ number_format($purchase->total_amount,2) }} <br> {{ number_format(0,2) }}</th>
                     </tr>
                 </tfoot>
             </table>

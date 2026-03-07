@@ -2,6 +2,18 @@
 @push('title')
     Sales Print
 @endpush
+@push('css')
+    <style>
+        .table-borderless,
+        .table-borderless tr,
+        .table-borderless td,
+        .table-borderless th {
+            border: none !important;
+            padding:0px;
+        }
+    </style>
+@endpush
+
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
@@ -10,7 +22,7 @@
             {{-- HEADER --}}
             <div class="text-center mb-3">
                 @if(auth()->user()->company_logo)
-                    <img src="{{ asset('storage/' . auth()->user()->company_logo) }}"
+                    <img src="{{ asset(auth()->user()->company_logo) }}"
                         alt="Company Logo"
                         style="max-height: 100px; margin-bottom: 10px;">
                 @endif
@@ -21,69 +33,121 @@
             </div>
 
             {{-- CUSTOMER INFO --}}
-            <table class="table table-borderless mb-3">
+            <table class="table table-bordered mb-3" style="border:1px solid #ADADAD">
                 <tr>
-                    <td colspan="2">
+                    <td class="w-50">
                         <div class="d-flex justify-content-between">
-                            <!-- Start point (left) -->
-                            <div>
-                                <strong>Customer Name & ID :</strong> {{ $sale->customer?->name }} <br>
-                                <strong>Customer Address :</strong> {{ $sale->customer?->address }} <br>
-                                <strong>Sales Center Name :</strong> {{ $sale->customer?->sale_center }} <br>
-                                <strong>District Name :</strong> {{ $sale->customer?->district }} <br>
-                                <strong>Thana Name :</strong> {{ $sale->customer?->thana }} <br>
-                                <strong>Area Name :</strong> {{ $sale->customer?->area }} <br>
-                                <strong>Mobile :</strong> {{ $sale->customer?->phone }}
-                            </div>
 
-                            <!-- End point (right) -->
-                            <div class="text-end">
-                                <strong>Name & ID :</strong> {{ auth()->user()->company_name ?? 'Company Name Here' }} <br>
-                                <strong>Payment Type :</strong> {{ ucfirst($sale->payment_type) }} <br>
-                                <strong>Order No :</strong> #{{ $sale->id }} <br>
-                                <strong>Order Date :</strong> {{ $sale->order_date }} <br>
-                                <strong>Delivery Date :</strong> {{ $sale->delivery_date }}
-                            </div>
+                            <!-- LEFT SIDE -->
+                            <table class="table table-borderless table-sm w-auto">
+                                <tr>
+                                    <td class="fw-bold pe-2">Customer Name & ID</td>
+                                    <td class="pe-2">:</td>
+                                    <td>{{ $sale->customer?->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold pe-2">Customer Address</td>
+                                    <td>:</td>
+                                    <td>{{ $sale->customer?->address }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold pe-2">Sales Center Name</td>
+                                    <td>:</td>
+                                    <td>{{ $sale->customer?->sale_center }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold pe-2">District Name</td>
+                                    <td>:</td>
+                                    <td>{{ $sale->customer?->district }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold pe-2">Thana Name</td>
+                                    <td>:</td>
+                                    <td>{{ $sale->customer?->thana }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold pe-2">Area Name</td>
+                                    <td>:</td>
+                                    <td>{{ $sale->customer?->area }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold pe-2">Mobile</td>
+                                    <td>:</td>
+                                    <td>{{ $sale->customer?->phone }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                    <td class="w-50">
+                        <!-- RIGHT SIDE -->
+                        <div class="d-flex justify-content-start">
+                            <table class="table table-borderless table-sm w-auto">
+                                <tr>
+                                    <td class="fw-bold pe-2">Name & ID</td>
+                                    <td class="pe-2">:</td>
+                                    <td>{{ $sale->customer?->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold pe-2">Payment Type</td>
+                                    <td class="pe-2">:</td>
+                                    <td>{{ ucfirst($sale->payment_type) }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold pe-2">Order No</td>
+                                    <td class="pe-2">:</td>
+                                    <td>#{{ $sale->id }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold pe-2">Order Date</td>
+                                    <td class="pe-2">:</td>
+                                    <td>{{ Carbon\Carbon::parse($sale->order_date)->format('d M Y') }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold pe-2">Delivery Date</td>
+                                    <td class="pe-2">:</td>
+                                    <td>{{ Carbon\Carbon::parse($sale->delivery_date)->format('d M Y') }}</td>
+                                </tr>
+                            </table>
                         </div>
                     </td>
                 </tr>
             </table>
 
             {{-- ITEMS TABLE --}}
-            <table class="table table-bordered text-center">
-                <thead class="table-light">
-                    <tr>
-                        <th>SL</th>
-                        <th>Description of Goods</th>
-                        <th>Doses Form</th>
-                        <th>Qty</th>
-                        <th>Bonus</th>
-                        <th>Rate</th>
-                        <th>Dis %</th>
-                        <th>Amount</th>
-                        <th>Bonus Facility</th>
+            <table class="table table-bordered" style="border:1px solid #ADADAD">
+                <thead class="table-secondary p-0" style="">
+                    <tr class="p-0">
+                        <th class="px-1">SL</th>
+                        <th class="px-1">Description of Goods</th>
+                        <th class="px-1">Doses Form</th>
+                        <th class="px-1">Qty</th>
+                        <th class="px-1">Bonus</th>
+                        <th class="px-1">TP</th>
+                        <th class="px-1">Dis%</th>
+                        <th class="px-1">Amount</th>
+                        <th class="px-1">Bonus Facility</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="p-0">
                     @foreach($sale->items as $key => $item)
-                    <tr>
-                        <td>{{ $key + 1 }}</td>
-                        <td>{{ $item->product->name }} {{ $item->product?->unit?->name }}</td>
-                        <td>{{ $item->does_form }}</td>
-                        <td>{{ $item->quantity }}</td>
-                        <td>{{ $item->bonus ?? 0 }}</td>
-                        <td>{{ number_format($item->price,2) }}</td>
-                        <td>{{ $item->discount ?? 0 }}</td>
-                        <td>{{ number_format($item->sub_total,2) }}</td>
-                        <td>{{ $item->bonus_facility ?? 0 }}</td>
+                    <tr class="p-0">
+                        <td class="p-1">{{ $key + 1 }}</td>
+                        <td class="p-1">{{ $item->product->name }} {{ $item->product?->unit?->name }}</td>
+                        <td class="p-1">{{ $item->does_form }}</td>
+                        <td class="p-1">{{ $item->quantity }}</td>
+                        <td class="p-1">{{ $item->bonus ?? 0 }}</td>
+                        <td class="p-1">{{ number_format($item->price,2) }}</td>
+                        <td class="p-1">{{ $item->discount ?? 0 }}</td>
+                        <td class="p-1">{{ number_format($item->sub_total,2) }}</td>
+                        <td class="p-1">{{ $item->bonus_facility ?? 0 }}</td>
                     </tr>
                     @endforeach
                 </tbody>
 
                 <tfoot>
                     <tr>
-                        <th colspan="7" class="text-end">Total</th>
-                        <th>{{ number_format($sale->total,2) }}</th>
+                        <th colspan="7" class="text-end">Total Amount<br> Paid Amount<br> Due Amount</th>
+                        <th>{{ number_format($sale->total,2) }} <br> {{ number_format($paymentTransaction->paid,2) }} <br> {{ number_format($paymentTransaction->due,2) }}</th>
                         <th></th>
                     </tr>
                 </tfoot>

@@ -31,14 +31,33 @@ class DashboardController extends Controller
             $user->company_address = $request->company_address;
 
             if ($request->hasFile('company_logo')) {
-                if ($user->company_logo && file_exists(storage_path('app/public/'.$user->company_logo))) {
-                    unlink(storage_path('app/public/'.$user->company_logo));
+
+                // Delete old file if exists
+                if ($user->company_logo && file_exists(public_path($user->company_logo))) {
+                    unlink(public_path($user->company_logo));
                 }
 
+                // Get the uploaded file
                 $file = $request->file('company_logo');
-                $filename = time().'_'.$file->getClientOriginalName();
-                $path = $file->storeAs('company_logos', $filename, 'public');
-                $user->company_logo = $path;
+
+                // Generate a unique filename
+                $filename = time() . '_' . $file->getClientOriginalName();
+
+                // Define the upload directory
+                $uploadPath = 'storage/uploads/company_logos/';
+
+                // Make sure directory exists
+                if (!file_exists(public_path($uploadPath))) {
+                    mkdir(public_path($uploadPath), 0755, true);
+                }
+
+                // Move the file to the upload directory
+                $file->move(public_path($uploadPath), $filename);
+
+                // Save path to database
+                $user->company_logo = $uploadPath . $filename;
+
+                $user->save();
             }
 
             // Handle password update

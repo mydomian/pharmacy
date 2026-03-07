@@ -60,7 +60,7 @@
                                         @error('company_logo') <span class="text-danger">{{ $message }}</span> @enderror
                                         @if($user->company_logo)
                                             <div class="mt-2">
-                                                <img src="{{ asset('storage/'.$user->company_logo) }}" alt="Logo" style="max-height: 80px;">
+                                                <img src="{{ asset($user->company_logo) }}" alt="Logo" style="max-height: 80px;">
                                             </div>
                                         @endif
                                     </div>

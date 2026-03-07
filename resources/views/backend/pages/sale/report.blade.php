@@ -83,9 +83,9 @@
                                             <td><a href="{{ route('sales.show', $sale->id) }}"># {{ $sale->id }}</a></td>
                                             <td>{{ $sale->customer?->name }}</td>
                                             <td>{{ $sale->payment_type ?? 'Cash' }}</td>
-                                            <td>{{ $sale->order_date ?? '' }}</td>
-                                            <td>{{ $sale->delivery_date ?? '' }}</td>
-                                            <td>{{ $sale->date ?? '' }}</td>
+                                            <td>{{ Carbon\Carbon::parse($sale->order_date)->format('d M Y') ?? '' }}</td>
+                                            <td>{{ Carbon\Carbon::parse($sale->delivery_date)->format('d M Y') ?? '' }}</td>
+                                            <td>{{ Carbon\Carbon::parse($sale->date)->format('d M Y') ?? '' }}</td>
                                             <td>{{ number_format($sale->total) ?? '' }}</td>
                                             <td class="d-flex justify-content-center align-items-center gap-2">
                                                 <a href="{{ route('sales.print', $sale->id) }}" class="btn btn-sm btn-secondary d-flex justify-content-center align-items-center gap-1"><i class="fas fa-print"></i> Print</a>
