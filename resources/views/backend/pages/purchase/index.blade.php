@@ -37,7 +37,7 @@
                                                             <td>{{ $loop->iteration }}</td>
                                                             <td> <a href="{{ route('purchases.show', $purchase->id) }}"># {{ $purchase->id }}</a></td>
                                                             <td>{{ $purchase->supplier?->name }}</td>
-                                                            <td>{{ $purchase->purchase_date ?? '' }}</td>
+                                                            <td>{{ Carbon\Carbon::parse($purchase->purchase_date)->format('d M Y') ?? '' }}</td>
                                                             <td>{{ number_format($purchase->total_amount) ?? '' }}</td>
                                                             <td class="d-flex justify-content-center align-items-center gap-2">
                                                                 <a href="{{ route('purchases.print', $purchase->id) }}" class="btn btn-sm btn-secondary waves-effect waves-light d-flex justify-content-center align-items-center gap-1"><i class="fas fa-print"></i> Print</a>

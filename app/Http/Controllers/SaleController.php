@@ -209,7 +209,8 @@ class SaleController extends Controller
         $numberToWords = new NumberToWords();
         $numberTransformer = $numberToWords->getNumberTransformer('en');
         $words = $numberTransformer->toWords($sale->total);
-        return view('backend.pages.sale.print', compact('sale','words'));
+        $paymentTransaction = PaymentTransaction::where(['customer_id'=>$sale->customer_id,'sale_id'=>$sale->id])->first();
+        return view('backend.pages.sale.print', compact('sale','words','paymentTransaction'));
     }
 
     public function reports(Request $request){

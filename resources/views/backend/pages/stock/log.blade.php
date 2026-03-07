@@ -60,7 +60,7 @@
                                                             <td>{{ $stockLog->quantity }}</td>
                                                             <td>{{ $stockLog->bonus }}</td>
                                                             <td>{{ $stockLog->bonus_facility }}</td>
-                                                            <td>{{ $stockLog->date }}</td>
+                                                            <td>{{ Carbon\Carbon::parse($stockLog->date)->format('d M Y') }}</td>
                                                             <td class="text-center">
                                                                 <span class="badge {{ $stockLog->type === 'in' ? 'bg-success' : 'bg-danger' }}">
                                                                     {{ ucfirst($stockLog->type) }}
