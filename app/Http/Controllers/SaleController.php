@@ -9,15 +9,14 @@ use App\Models\Sale;
 use App\Models\Stock;
 use App\Models\StockLog;
 use Illuminate\Http\Request;
-use NumberToWords\NumberToWords;
 
 
 class SaleController extends Controller
 {
     public function index()
     {
-        $sales = Sale::with('customer','items')->latest()->get();
-        return view('backend.pages.sale.index',compact('sales'));
+        $sales = Sale::with('customer', 'items')->latest()->get();
+        return view('backend.pages.sale.index', compact('sales'));
     }
 
     /**
@@ -27,7 +26,7 @@ class SaleController extends Controller
     {
         $customers = Customer::get();
         $products = Product::get();
-        return view('backend.pages.sale.create', compact('customers','products'));
+        return view('backend.pages.sale.create', compact('customers', 'products'));
     }
 
     /**
@@ -93,7 +92,7 @@ class SaleController extends Controller
      */
     public function show(string $id)
     {
-        $sale = Sale::with('customer','items.product')->findOrFail($id);
+        $sale = Sale::with('customer', 'items.product')->findOrFail($id);
         return view('backend.pages.sale.show', compact('sale'));
     }
 
@@ -104,8 +103,8 @@ class SaleController extends Controller
     {
         $customers = Customer::get();
         $products = Product::get();
-        $sale = Sale::with('customer','items.product','payment_transactions')->findOrFail($id);
-        return view('backend.pages.sale.edit', compact('customers','products','sale'));
+        $sale = Sale::with('customer', 'items.product', 'payment_transactions')->findOrFail($id);
+        return view('backend.pages.sale.edit', compact('customers', 'products', 'sale'));
     }
 
     /**
@@ -127,8 +126,8 @@ class SaleController extends Controller
 
             // Delete old stock logs
             StockLog::where('sale_id', $sale->id)
-                    ->where('product_id', $oldItem->product_id)
-                    ->delete();
+                ->where('product_id', $oldItem->product_id)
+                ->delete();
         }
 
         // Update sale info
@@ -180,7 +179,7 @@ class SaleController extends Controller
                 'type' => 'out',
             ]);
         }
-        $payment = PaymentTransaction::where(['sale_id'=>$sale->id,'customer_id'=>$sale->customer_id])->first();
+        $payment = PaymentTransaction::where(['sale_id' => $sale->id, 'customer_id' => $sale->customer_id])->first();
         $payment->update([
             'customer_id' => $request->customer_id,
             'total' => $sale->total,
@@ -201,22 +200,99 @@ class SaleController extends Controller
     {
         $sale = Sale::findOrFail($id);
         $sale->delete();
-        return redirect()->route('sales.index')->with('error','Sale deleted successfully');
+        return redirect()->route('sales.index')->with('error', 'Sale deleted successfully');
     }
 
-    public function print($id){
-        $sale = Sale::with('customer','items.product')->findOrFail($id);
-        $numberToWords = new NumberToWords();
-        $numberTransformer = $numberToWords->getNumberTransformer('en');
-        $words = $numberTransformer->toWords($sale->total);
-        $paymentTransaction = PaymentTransaction::where(['customer_id'=>$sale->customer_id,'sale_id'=>$sale->id])->first();
-        return view('backend.pages.sale.print', compact('sale','words','paymentTransaction'));
+    public function print($id)
+    {
+        $sale = Sale::with('customer', 'items.product')->findOrFail($id);
+        $amount = (float) $sale->total;
+        $words = $this->numberToWordsBD($amount);
+        $paymentTransaction = PaymentTransaction::where(['customer_id' => $sale->customer_id, 'sale_id' => $sale->id])->first();
+        return view('backend.pages.sale.print', compact('sale', 'words', 'paymentTransaction'));
     }
 
-    public function reports(Request $request){
+    public function reports(Request $request)
+    {
         $fromDate = $request->query('from_date') ?? date('Y-m-d');
         $toDate = $request->query('to_date') ?? date('Y-m-d');
         $sales = Sale::with('customer', 'items')->whereBetween('date', [$fromDate, $toDate])->latest()->get();
         return view('backend.pages.sale.report', compact('sales', 'fromDate', 'toDate'));
+    }
+
+    public function numberToWordsBD($amount)
+    {
+        $ones = [
+            0 => '',
+            1 => 'one',
+            2 => 'two',
+            3 => 'three',
+            4 => 'four',
+            5 => 'five',
+            6 => 'six',
+            7 => 'seven',
+            8 => 'eight',
+            9 => 'nine',
+            10 => 'ten',
+            11 => 'eleven',
+            12 => 'twelve',
+            13 => 'thirteen',
+            14 => 'fourteen',
+            15 => 'fifteen',
+            16 => 'sixteen',
+            17 => 'seventeen',
+            18 => 'eighteen',
+            19 => 'nineteen'
+        ];
+
+        $tens = [
+            2 => 'twenty',
+            3 => 'thirty',
+            4 => 'forty',
+            5 => 'fifty',
+            6 => 'sixty',
+            7 => 'seventy',
+            8 => 'eighty',
+            9 => 'ninety'
+        ];
+
+        $num = floor($amount);
+        $paisa = round(($amount - $num) * 100);
+
+        $convert = function ($num) use (&$convert, $ones, $tens) {
+            $str = '';
+            if ($num >= 10000000) {
+                $str .= $convert(intval($num / 10000000)) . ' crore ';
+                $num %= 10000000;
+            }
+            if ($num >= 100000) {
+                $str .= $convert(intval($num / 100000)) . ' lakh ';
+                $num %= 100000;
+            }
+            if ($num >= 1000) {
+                $str .= $convert(intval($num / 1000)) . ' thousand ';
+                $num %= 1000;
+            }
+            if ($num >= 100) {
+                $str .= $convert(intval($num / 100)) . ' hundred ';
+                $num %= 100;
+            }
+            if ($num > 0) {
+                if ($num < 20) {
+                    $str .= $ones[$num];
+                } else {
+                    $str .= $tens[intval($num / 10)];
+                    if ($num % 10) {
+                        $str .= ' ' . $ones[$num % 10];
+                    }
+                }
+            }
+            return trim($str);
+        };
+        $words = $convert($num);
+        if ($paisa > 0) {
+            $words .= ' and ' . $convert($paisa) . ' paisa';
+        }
+        return trim($words);
     }
 }
