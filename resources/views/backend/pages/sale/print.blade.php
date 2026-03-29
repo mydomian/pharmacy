@@ -18,28 +18,31 @@
 <div class="page-content">
     <div class="container-fluid">
 
-        <div class="card p-4" id="invoice">
+        <div class="card px-2 py-3" id="invoice">
             {{-- HEADER --}}
-            <div class="text-center mb-3">
-                @if(auth()->user()->company_logo)
-                    <img src="{{ asset(auth()->user()->company_logo) }}"
-                        alt="Company Logo"
-                        style="max-height: 100px; margin-bottom: 10px;">
-                @endif
-                <h3 class="fw-bold text-success">{{ auth()->user()->company_name ?? 'Company Name Here' }}</h3>
-                <p class="mb-0">{{ auth()->user()->company_phone ?? 'Company Phone Here' }}</p>
-                <p class="mb-0">{{ auth()->user()->company_address ?? 'Company Address Here' }}</p>
-                <h5 class="mt-2 text-uppercase">Invoice</h5>
+            <div class="d-flex justify-content-center align-items-center">
+                <div>
+                    @if(auth()->user()->company_logo)
+                        <img src="{{ asset(auth()->user()->company_logo) }}"
+                            alt="Company Logo"
+                            style="max-height: 100px;">
+                    @endif
+                </div>
+                <div class="text-center">
+                    <h4 class="fw-bold text-success">{{ auth()->user()->company_name ?? 'Company Name Here' }}</h4>
+                    <p class="mb-0">{!! auth()->user()->company_address ?? 'Company Address Here' !!}</p>
+                    <p class="mb-0">{{ auth()->user()->company_phone ?? 'Company Phone Here' }}</p>
+                    <h6 class=" text-uppercase">Invoice</h6>
+                </div>
             </div>
-
             {{-- CUSTOMER INFO --}}
-            <table class="table table-bordered mb-3" style="border:1px solid #ADADAD">
-                <tr>
-                    <td class="w-50">
+            <table class="table table-bordered mb-1" style="border:1px solid #ADADAD;">
+                <tr class="">
+                    <td class="w-50 p-1">
                         <div class="d-flex justify-content-between">
 
                             <!-- LEFT SIDE -->
-                            <table class="table table-borderless table-sm w-auto">
+                            <table class="table table-borderless table-sm w-auto mb-0">
                                 <tr>
                                     <td class="fw-bold pe-2">Customer Name & ID</td>
                                     <td class="pe-2">:</td>
@@ -78,10 +81,10 @@
                             </table>
                         </div>
                     </td>
-                    <td class="w-50">
+                    <td class="w-50 p-1">
                         <!-- RIGHT SIDE -->
                         <div class="d-flex justify-content-start">
-                            <table class="table table-borderless table-sm w-auto">
+                            <table class="table table-borderless table-sm w-auto mb-0">
                                 <tr>
                                     <td class="fw-bold pe-2">Name & ID</td>
                                     <td class="pe-2">:</td>
@@ -114,52 +117,53 @@
             </table>
 
             {{-- ITEMS TABLE --}}
-            <table class="table table-bordered" style="border:1px solid #ADADAD">
-                <thead class="table-secondary p-0" style="">
+            <table class="table table-bordered mb-2" style="border:1px solid #ADADAD">
+                <thead class="table-secondary p-0">
                     <tr class="p-0">
-                        <th class="px-1">SL</th>
-                        <th class="px-1">Description of Goods</th>
-                        <th class="px-1">Doses Form</th>
-                        <th class="px-1">Qty</th>
-                        <th class="px-1">Bonus</th>
-                        <th class="px-1">TP</th>
-                        <th class="px-1">Dis%</th>
-                        <th class="px-1">Amount</th>
-                        <th class="px-1">Bonus Facility</th>
+                        <th class="p-1">SL</th>
+                        <th class="p-1">Description of Goods</th>
+                        <th class="p-1">Doses Form</th>
+                        <th class="p-1">Qty</th>
+                        <th class="p-1">Bonus</th>
+                        <th class="p-1">TP</th>
+                        <th class="p-1">Dis%</th>
+                        <th class="p-1">Amount</th>
+                        <th class="p-1">Bonus Facility</th>
                     </tr>
                 </thead>
                 <tbody class="p-0">
                     @foreach($sale->items as $key => $item)
                     <tr class="p-0">
-                        <td class="p-1">{{ $key + 1 }}</td>
-                        <td class="p-1">{{ $item->product->name }} {{ $item->product?->unit?->name }}</td>
-                        <td class="p-1">{{ $item->does_form }}</td>
-                        <td class="p-1">{{ $item->quantity }}</td>
-                        <td class="p-1">{{ $item->bonus ?? 0 }}</td>
-                        <td class="p-1">{{ number_format($item->price,2) }}</td>
-                        <td class="p-1">{{ $item->discount ?? 0 }}</td>
-                        <td class="p-1">{{ number_format($item->sub_total,2) }}</td>
-                        <td class="p-1">{{ $item->bonus_facility ?? 0 }}</td>
+                        <td style="padding:0px 2px;">{{ $key + 1 }}</td>
+                        <td style="padding:0px 2px;">{{ $item->product->name }} {{ $item->product?->unit?->name }}</td>
+                        <td style="padding:0px 2px;">{{ $item->does_form }}</td>
+                        <td style="padding:0px 2px;">{{ $item->quantity }}</td>
+                        <td style="padding:0px 2px;">{{ $item->bonus ?? 0 }}</td>
+                        <td style="padding:0px 2px;">{{ number_format($item->price,2) }}</td>
+                        <td style="padding:0px 2px;">{{ $item->discount ?? 0 }}</td>
+                        <td style="padding:0px 2px;">{{ number_format($item->sub_total,2) }}</td>
+                        <td style="padding:0px 2px;">{{ $item->bonus_facility ?? 0 }}</td>
                     </tr>
                     @endforeach
                 </tbody>
 
                 <tfoot>
                     <tr>
-                        <th colspan="7" class="text-end">Total Amount<br> Paid Amount<br> Due Amount</th>
-                        <th>{{ number_format($sale->total,2) }} <br> {{ number_format($paymentTransaction->paid,2) }} <br> {{ number_format($paymentTransaction->due,2) }}</th>
-                        <th></th>
+                        <th colspan="7" class="text-end" style="padding:0px 5px;">Total Amount<br> Paid Amount<br> Due Amount</th>
+                        <th  style="padding:0px 5px;">{{ number_format($sale->total,2) }} <br> {{ number_format($paymentTransaction->paid,2) }} <br> {{ number_format($paymentTransaction->due,2) }}</th>
+                        <th  style="padding:0px 5px;"></th>
                     </tr>
                 </tfoot>
             </table>
 
             {{-- AMOUNT IN WORDS --}}
-            <p><strong>Taka (In Words):</strong>
+            <p>
+                <strong>Taka (In Words):</strong>
                 {{ Str::ucfirst($words) }} taka only
             </p>
 
             {{-- SIGNATURE --}}
-            <div class="row mt-5 text-center">
+            <div class="row mt-2 text-center">
                 <div class="col-4">
                     _____________________ <br>
                     Customer's Signature
