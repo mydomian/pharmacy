@@ -17,28 +17,31 @@
 <div class="page-content">
     <div class="container-fluid">
 
-        <div class="card p-4" id="invoice">
+        <div class="card px-2 py-3" id="invoice">
             {{-- HEADER --}}
-            <div class="text-center mb-3">
-                @if(auth()->user()->company_logo)
-                    <img src="{{ asset(auth()->user()->company_logo) }}"
-                        alt="Company Logo"
-                        style="max-height: 100px; margin-bottom: 10px;">
-                @endif
-                <h3 class="fw-bold text-success">{{ auth()->user()->company_name ?? 'Company Name Here' }}</h3>
-                <p class="mb-0">{{ auth()->user()->company_phone ?? 'Company Phone Here' }}</p>
-                <p class="mb-0">{{ auth()->user()->company_address ?? 'Company Address Here' }}</p>
-                <h5 class="mt-2 text-uppercase">Invoice</h5>
+             <div class="d-flex justify-content-center align-items-center">
+                <div>
+                    @if(auth()->user()->company_logo)
+                        <img src="{{ asset(auth()->user()->company_logo) }}"
+                            alt="Company Logo"
+                            style="max-height: 90px;">
+                    @endif
+                </div>
+                <div class="text-center">
+                    <h4 class="fw-bold text-success">{{ auth()->user()->company_name ?? 'Company Name Here' }}</h4>
+                    <p class="mb-0">{!! auth()->user()->company_address ?? 'Company Address Here' !!}</p>
+                    <p class="mb-0">{{ auth()->user()->company_phone ?? 'Company Phone Here' }}</p>
+                    <h6 class=" text-uppercase">Invoice</h6>
+                </div>
             </div>
-
             {{-- Supplier INFO --}}
-            <table class="table table-bordered mb-3">
-                <tr>
-                    <td class="w-50">
+            <table class="table table-bordered mb-1" style="border:1px solid #ADADAD;">
+                <tr class="">
+                    <td class="w-50 p-1">
                         <div class="d-flex justify-content-between">
 
                             <!-- LEFT SIDE -->
-                            <table class="table table-borderless table-sm w-auto">
+                            <table class="table table-borderless table-sm w-auto mb-0">
                                 <tr>
                                     <td class="fw-bold pe-2">Supplier Name & ID</td>
                                     <td class="pe-2">:</td>
@@ -46,24 +49,22 @@
                                 </tr>
                                 <tr>
                                     <td class="fw-bold pe-2">Supplier Address</td>
-                                    <td class="pe-2">:</td>
+                                    <td>:</td>
                                     <td>{{ $purchase->supplier?->address }}</td>
                                 </tr>
                                 <tr>
                                     <td class="fw-bold pe-2">Mobile</td>
-                                    <td class="pe-2">:</td>
+                                    <td>:</td>
                                     <td>{{ $purchase->supplier?->phone }}</td>
                                 </tr>
                             </table>
-
-                           
-
                         </div>
                     </td>
-                    <td class="w-50">
-                        <div class="d-flex justify-content-end">
-                             <!-- RIGHT SIDE -->
-                            <table class="table table-borderless table-sm w-auto text-end">
+                    <td class="w-50 p-1">
+
+                        <!-- RIGHT SIDE -->
+                        <div class="d-flex justify-content-start">
+                            <table class="table table-borderless table-sm w-auto mb-0">
                                 <tr>
                                     <td class="fw-bold pe-2">Name & ID</td>
                                     <td class="pe-2">:</td>
@@ -90,58 +91,41 @@
                 </tr>
             </table>
 
-
             {{-- ITEMS TABLE --}}
-            <table class="table table-bordered text-center">
-                <thead class="table-light">
-                    <tr>
-                        <th>SL</th>
-                        <th>Description of Goods</th>
-                        <th>Qty</th>
-                        <th>Buying Price</th>
-                        <th>Amount</th>
+            <table class="table table-bordered mb-2" style="border:1px solid #ADADAD">
+                <thead class="table-secondary p-0">
+                    <tr class="p-0">
+                        <th class="p-1">SL</th>
+                        <th class="p-1">Description of Goods</th>
+                        <th class="p-1">Qty</th>
+                        <th class="p-1">Buying Price</th>
+                        <th class="p-1">Amount</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="p-0">
                     @foreach($purchase->items as $key => $item)
-                    <tr>
-                        <td>{{ $key + 1 }}</td>
-                        <td>{{ $item->product->name }} {{ $item->product?->unit?->name }}</td>
-                        <td>{{ $item->quantity }}</td>
-                        <td>{{ number_format($item->buying_price,2) }}</td>
-                        <td>{{ number_format($item->subtotal,2) }}</td>
+                    <tr class="p-0">
+                        <td style="padding:0px 2px;">{{ $key + 1 }}</td>
+                        <td style="padding:0px 2px;">{{ $item->product->name }} {{ $item->product?->unit?->name }}</td>
+                        <td style="padding:0px 2px;">{{ $item->quantity }}</td>
+                        <td style="padding:0px 2px;">{{ number_format($item->buying_price,2) }}</td>
+                        <td style="padding:0px 2px;">{{ number_format($item->subtotal,2) }}</td>
                     </tr>
                     @endforeach
                 </tbody>
-
                 <tfoot>
                     <tr>
-                        <th colspan="4" class="text-end">Total Amount<br> Paid Amount<br> Due Amount</th>
-                        <th>{{ number_format($purchase->total_amount,2) }} <br> {{ number_format($purchase->total_amount,2) }} <br> {{ number_format(0,2) }}</th>
+                        <th colspan="4" class="text-end" style="padding:0px 5px;">Total Amount<br> Paid Amount<br> Due Amount</th>
+                        <th  style="padding:0px 5px;">{{ number_format($purchase->total_amount,2) }} <br> {{ number_format($purchase->total_amount,2) }} <br> {{ number_format(0,2) }}</th>
+
                     </tr>
                 </tfoot>
             </table>
-
-            {{-- AMOUNT IN WORDS --}}
-            <p><strong>Taka (In Words):</strong>
+             {{-- AMOUNT IN WORDS --}}
+            <p>
+                <strong>Taka (In Words):</strong>
                 {{ Str::ucfirst($words) }} taka only
             </p>
-
-            {{-- SIGNATURE --}}
-            <div class="row mt-5 text-center">
-                <div class="col-4">
-                    _____________________ <br>
-                    Supplier's Signature
-                </div>
-                <div class="col-4">
-                    _____________________ <br>
-                    Prepared By
-                </div>
-                <div class="col-4">
-                    _____________________ <br>
-                    Authorized Signature
-                </div>
-            </div>
         </div>
 
     </div>
