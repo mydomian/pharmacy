@@ -53,7 +53,7 @@
                                                             <td>{{ $customer?->area }}</td>
                                                             <td>{{ $customer?->created_at->format('d M Y') }}</td>
                                                             <td class="d-flex justify-content-center align-items-center gap-2">
-                                                                <a href="{{ route('customers.payment',$customer->id) }}" class="btn btn-sm btn-primary waves-effect waves-light d-flex justify-content-center align-items-center gap-1"><i class="fas fa-money-check-alt"></i> Payment</a>
+                                                                <a href="{{ route('customers.payment',$customer->id) }}" class="btn btn-sm btn-primary waves-effect waves-light d-flex justify-content-center align-items-center gap-1"><i class="fas fa-money-check-alt"></i>Sales Lists</a>
                                                                 <a href="{{ route('customers.edit', $customer->id) }}" class="btn btn-sm btn-primary waves-effect waves-light d-flex justify-content-center align-items-center gap-1"><i class="fas fa-edit"></i> Edit</a>
                                                                 <form action="{{ route('customers.destroy', $customer->id) }}"
                                                                     method="POST"

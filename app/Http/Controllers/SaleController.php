@@ -76,11 +76,9 @@ class SaleController extends Controller
         $paymentTransaction = PaymentTransaction::create([
             'customer_id' => $request->customer_id,
             'sale_id' => $sale->id,
-            'total' => $sale->total,
             'paid' => $request->paid_amount,
-            'due' => $sale->total - $request->paid_amount,
             'payment_date' => $sale->date,
-            'payment_status' => "Inital Payment",
+            'payment_status' => "Initial Payment",
             'note' => $request->note,
         ]);
 
@@ -182,11 +180,9 @@ class SaleController extends Controller
         $payment = PaymentTransaction::where(['sale_id' => $sale->id, 'customer_id' => $sale->customer_id])->first();
         $payment->update([
             'customer_id' => $request->customer_id,
-            'total' => $sale->total,
             'paid' => $request->paid_amount,
-            'due' => $sale->total - $request->paid_amount,
             'payment_date' => $sale->date,
-            'payment_status' => "Due Payment",
+            'payment_status' => "Initial Payment",
             'note' => $request->note,
         ]);
         return redirect()->route('sales.print', $sale->id);

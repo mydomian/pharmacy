@@ -30,11 +30,11 @@
                             <div class="row mb-3 d-flex justify-content-center">
                                 <!-- Selected Range Info -->
 
-                                <div class="col-12 col-md-4">
+                                <div class="col-12 col-md-5">
                                     @if($fromDate && $toDate)
                                         <p class="text-muted text-center">Showing purchases from <strong>{{ $fromDate }}</strong> to <strong>{{ $toDate }}</strong></p>
                                     @endif
-                                    <form action="{{ route('purchases.reports') }}" method="GET" class="row g-2 align-items-center">
+                                    <form action="{{ route('sales.reports') }}" method="GET" class="row g-2 align-items-center">
                                         <div class="col-auto">
                                             <label for="from_date" class="col-form-label">From:</label>
                                         </div>
@@ -51,7 +51,7 @@
                                             <button type="submit" class="btn btn-primary">Filter</button>
                                         </div>
                                         <div class="col-auto">
-                                            <a href="{{ route('purchases.reports') }}" class="btn btn-secondary">Reset</a>
+                                            <a href="{{ route('sales.reports') }}" class="btn btn-secondary">Reset</a>
                                         </div>
                                     </form>
                                 </div>
@@ -60,7 +60,9 @@
 
 
                             <!-- Table -->
-                            @php $grandTotal = $sales->sum('total'); @endphp
+                            @php
+                                $grandTotal = $sales->sum('total');
+                            @endphp
                             <div style="width: 100%; overflow-x: auto;">
                                 <table id="datatable" class="table table-sm table-striped table-bordered" style="border-collapse: collapse; border-spacing: 0;">
                                     <thead>
@@ -106,7 +108,6 @@
                                         <tr>
                                             <th colspan="7" class="text-end">Grand Total:</th>
                                             <th>{{ number_format($grandTotal) }}</th>
-                                            <th></th>
                                         </tr>
                                     </tfoot>
                                 </table>

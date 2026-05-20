@@ -91,7 +91,7 @@
                                  <!-- Total, Paid, Due -->
                                 <div class="row my-2 d-flex justify-content-end">
                                     <div class="col-12 col-sm-3 d-flex justify-content-between align-items-center">
-                                        <h6>Total Amount:</h6><h6 class="total_amount">{{ number_format($sale->payment_transactions?->first()->total) }}</h6>
+                                        <h6>Total Amount:</h6><h6 class="total_amount">{{ number_format($sale->total) }}</h6>
                                     </div>
                                 </div>
                                 <div class="row my-2 d-flex justify-content-end">
@@ -101,7 +101,7 @@
                                 </div>
                                 <div class="row my-2 d-flex justify-content-end">
                                     <div class="col-12 col-sm-3 d-flex justify-content-between align-items-center">
-                                        <h6>Due Amount:</h6><h6 class="due_amount">{{ number_format($sale->payment_transactions?->first()->due) }}</h6>
+                                        <h6>Due Amount:</h6><h6 class="due_amount">{{ number_format($sale->total - $sale->payment_transactions?->first()->paid) }}</h6>
                                     </div>
                                 </div>
 

@@ -1,5 +1,5 @@
 <meta charset="utf-8" />
-<title>@stack('title') | Pharmacy</title>
+<title>@stack('title') | Al Kaba Agrovet</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="shortcut icon" href="{{ asset('storage/assets/images/favicon.ico') }}">
 <link href="{{ asset('storage/assets/css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />

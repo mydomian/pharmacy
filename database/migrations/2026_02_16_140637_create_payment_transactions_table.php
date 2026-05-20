@@ -15,9 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->nullable()->constrained('customers')->onDelete('cascade');
             $table->foreignId('sale_id')->nullable()->constrained('sales')->onDelete('cascade');
-            $table->bigInteger('total')->nullable();
             $table->bigInteger('paid')->nullable();
-            $table->bigInteger('due')->nullable();
             $table->date('payment_date')->nullable();
             $table->string('payment_status')->nullable();
             $table->text('note')->nullable();

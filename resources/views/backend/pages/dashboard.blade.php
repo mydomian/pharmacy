@@ -93,7 +93,7 @@
                     Welcome to {{ auth()->user()->company_name ?? '' }} Dashboard
                 </small><br>
                 <small>
-                    software version: 1.0.0.12
+                    software version: 20.05.26
                 </small>
             </div>
         </div>

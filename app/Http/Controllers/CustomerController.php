@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\PaymentTransaction;
+use App\Models\Sale;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -60,6 +61,15 @@ class CustomerController extends Controller
 
     }
 
+    public function getSales($customerId)
+    {
+        $sales = Sale::where('customer_id', $customerId)
+            ->select('id')
+            ->orderBy('id', 'desc')
+            ->get();
+        return response()->json($sales);
+    }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -72,46 +82,74 @@ class CustomerController extends Controller
 
     public function customer_payment($id){
         $customer = Customer::find($id);
-        $payments = PaymentTransaction::where('customer_id', $id)->orderBy('sale_id')->get()->groupBy('sale_id');
-        return view('backend.pages.customer.payment',compact('customer','payments'));
+        $sales = Sale::where('customer_id', $id)->orderBy('id','desc')->get();
+        $payments = PaymentTransaction::where('customer_id', $id)->orderBy('id','asc')->get();
+        return view('backend.pages.customer.payment',compact('customer','sales','payments'));
     }
 
     public function release_payment(Request $request){
         $customer_id = $request->customer_id;
-        $sale_id = $request->sale_id;
+        $paid_amount = $request->paid;
+        $payment_date = $request->payment_date;
+        $note = $request->note;
+        PaymentTransaction::create([
+            'customer_id' => $customer_id,
+            'paid'        => $paid_amount,
+            'payment_date'=> $payment_date,
+            'payment_status' => 'Payment released',
+            'note'        => $note,
+        ]);
+        return back()->with('message', 'Payment released successfully.');
+    }
+
+    public function release_payment_update(Request $request){
+        $payment_id = $request->payment_id;
         $paid_amount = $request->paid;
         $payment_date = $request->payment_date;
         $note = $request->note;
 
-        // Get the sale payment record
-        $lastPayment = PaymentTransaction::where('customer_id', $customer_id)
-            ->where('sale_id', $sale_id)
-            ->orderBy('id', 'desc')
-            ->first();
-
-        $total_sale = $lastPayment ? $lastPayment->total : 0;
-        $paid_so_far = PaymentTransaction::where('customer_id', $customer_id)
-            ->where('sale_id', $sale_id)
-            ->sum('paid');
-
-        $due = $total_sale - $paid_so_far;
-
-        if ($paid_amount > $due) {
-            return back()->with('error', 'Paid amount cannot be greater than due.');
-        }
-
         // Create new payment transaction
-        PaymentTransaction::create([
-            'customer_id' => $customer_id,
-            'sale_id'     => $sale_id,
-            'total'       => $total_sale,
+        PaymentTransaction::find($payment_id)->update([
             'paid'        => $paid_amount,
-            'due'         => $due - $paid_amount,
             'payment_date'=> $payment_date,
-            'payment_status' => ($due - $paid_amount) == 0 ? 'Paid' : 'Due Payment',
             'note'        => $note,
         ]);
 
         return back()->with('message', 'Payment released successfully.');
+    }
+
+    public function payment_reports(Request $request)
+    {
+        $customers = Customer::orderBy('id','asc')->get();
+        $fromDate = '';
+        $toDate = '';
+        $customerId = '';
+        $payments = [];
+
+        if($request->isMethod('post')){
+            $fromDate = $request->from_date;
+            $toDate = $request->to_date;
+            $customerId = $request->customer_id;
+            $query = PaymentTransaction::with('customer')->where(['customer_id'=> $customerId])->orderBy('id','asc');
+            if($fromDate && $toDate){
+                $query->whereBetween('payment_date', [$fromDate, $toDate]);
+            }
+            $payments = $query->get();
+        }
+        return view('backend.pages.customer.reports', compact('customers', 'payments', 'fromDate', 'toDate','customerId'));
+    }
+
+    public function payment_reports_print(Request $request)
+    {
+        $fromDate = $request->query('from_date') ?? '';
+        $toDate = $request->query('to_date') ?? '';
+        $customerId = $request->query('customer_id') ?? '';
+
+        $query = PaymentTransaction::with('customer')->where(['customer_id'=> $customerId])->orderBy('id','asc');
+        if($fromDate && $toDate){
+            $query->whereBetween('payment_date', [$fromDate, $toDate]);
+        }
+        $payments = $query->get();
+        return view('backend.pages.customer.reports_print', compact('payments', 'fromDate', 'toDate', 'customerId'));
     }
 }

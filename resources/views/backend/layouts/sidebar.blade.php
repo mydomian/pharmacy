@@ -88,6 +88,7 @@
                  <ul class="sub-menu" aria-expanded="false">
                      <li><a href="{{ route('purchases.reports') }}">Purchase Report</a></li>
                      <li><a href="{{ route('sales.reports') }}">Sale Report</a></li>
+                     <li><a href="{{ route('customers.paymentReports') }}">Payment History Report</a></li>
                  </ul>
              </li>
              <li>

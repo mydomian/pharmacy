@@ -29,7 +29,7 @@
                     @endif
                 </div>
                 <div class="text-center">
-                    <h4 class="fw-bold text-success">{{ auth()->user()->company_name ?? 'Company Name Here' }}</h4>
+                    <h3 class="fw-bold text-success">{{ auth()->user()->company_name ?? 'Company Name Here' }}</h3>
                     <p class="mb-0">{!! auth()->user()->company_address ?? 'Company Address Here' !!}</p>
                     <p class="mb-0">{{ auth()->user()->company_phone ?? 'Company Phone Here' }}</p>
                     <h6 class=" text-uppercase">Invoice</h6>
@@ -54,20 +54,21 @@
                                     <td>{{ $sale->customer?->address }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="fw-bold pe-2">Sales Center Name</td>
+                                    <td class="fw-bold pe-2">Thana Name</td>
                                     <td>:</td>
-                                    <td>{{ $sale->customer?->sale_center }}</td>
+                                    <td>{{ $sale->customer?->thana }}</td>
                                 </tr>
-                                <tr>
+                                 <tr>
                                     <td class="fw-bold pe-2">District Name</td>
                                     <td>:</td>
                                     <td>{{ $sale->customer?->district }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="fw-bold pe-2">Thana Name</td>
+                                    <td class="fw-bold pe-2">Sales Center Name</td>
                                     <td>:</td>
-                                    <td>{{ $sale->customer?->thana }}</td>
+                                    <td>{{ $sale->customer?->sale_center }}</td>
                                 </tr>
+
                                 <tr>
                                     <td class="fw-bold pe-2">Area Name</td>
                                     <td>:</td>
@@ -150,7 +151,7 @@
                 <tfoot>
                     <tr>
                         <th colspan="7" class="text-end" style="padding:0px 5px;">Total Amount<br> Paid Amount<br> Due Amount</th>
-                        <th  style="padding:0px 5px;">{{ number_format($sale->total,2) }} <br> {{ number_format($paymentTransaction->paid,2) }} <br> {{ number_format($paymentTransaction->due,2) }}</th>
+                        <th  style="padding:0px 5px;">{{ number_format($sale->total,2) }} <br> {{ number_format($paymentTransaction->paid,2) }} <br> {{ number_format($sale->total - $paymentTransaction->paid,2) }}</th>
                         <th  style="padding:0px 5px;"></th>
                     </tr>
                 </tfoot>
