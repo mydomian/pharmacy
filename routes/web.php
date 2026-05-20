@@ -12,6 +12,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SalaryMonthController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\StockController;
+use Illuminate\Support\Facades\Artisan;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -22,6 +23,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('customers', CustomerController::class);
     Route::get('customers/{id}/payment', [CustomerController::class,'customer_payment'])->name('customers.payment');
     Route::post('customers/payment/release', [CustomerController::class,'release_payment'])->name('customers.releasePayment');
+    Route::post('customers/payment/release/update', [CustomerController::class,'release_payment_update'])->name('customers.releasePaymentUpdate');
+    Route::match(['get','post'],'customers-payment-reports', [CustomerController::class,'payment_reports'])->name('customers.paymentReports');
+    Route::get('customers-payment-reports-print', [CustomerController::class,'payment_reports_print'])->name('customers.paymentReportsPrint');
     Route::resource('suppliers', SupplierController::class);
     Route::resource('units', UnitController::class);
     Route::resource('products', ProductController::class);
@@ -39,6 +43,17 @@ Route::middleware('auth')->group(function () {
     Route::post('salaries/payment/release', [SalaryMonthController::class,'release_payment'])->name('salaries.releasePayment');
 
     Route::match(['get','post'],'profile',[DashboardController::class,'profile'])->name('profile');
+
+    // ajax
+    Route::get('/customers/{customer}/sales', [CustomerController::class, 'getSales'])->name('customers.getSales');
 });
 
+Route::get('/clear', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+    Artisan::call('view:clear');
+    Artisan::call('storage:link');
+    return 'cleared';
+})->name('clear');
 require __DIR__.'/auth.php';
